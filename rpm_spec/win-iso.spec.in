@@ -1,0 +1,39 @@
+%define build_number @REL@
+
+Name:	    vanir-windows-tools
+Version:	@VERSION@
+Release:	@REL@
+Summary:	Vanir Tools for Windows VMs
+Group:		Vanir
+License:    GPL
+Obsoletes:  vanir-core-dom0-pvdrivers
+BuildRequires: genisoimage
+BuildArch:  noarch
+Source0:    vanir-tools-WIN7x64-%{version}.%{release}.exe
+Source1:    iso-README.txt
+
+%prep
+%setup -c -T
+
+%description
+PV Drivers and Vanir Tools for Windows AppVMs. Bundled for Windows 7 64bit.
+
+%build
+
+mkdir -p iso-content
+cp %{SOURCE0} iso-content/vanir-tools-%{version}.%{release}.exe
+cp %{SOURCE1} iso-content/
+genisoimage -o vanir-windows-tools-%{version}.%{release}.iso -m .gitignore -JR iso-content
+
+
+%install
+mkdir -p $RPM_BUILD_ROOT/usr/lib/vanir/
+cp vanir-windows-tools-%{version}.%{release}.iso $RPM_BUILD_ROOT/usr/lib/vanir/
+ln -s vanir-windows-tools-%{version}.%{release}.iso $RPM_BUILD_ROOT/usr/lib/vanir/vanir-windows-tools.iso
+
+%files
+/usr/lib/vanir/vanir-windows-tools-%{version}.%{release}.iso
+/usr/lib/vanir/vanir-windows-tools.iso
+
+%changelog
+
